@@ -1,0 +1,92 @@
+---
+const options = [
+  {
+    name: "Auto osobowe (do 2000 ccm)",
+    value: 3.1,
+  },
+  {
+    name: "Auto osobowe (powyżej 2000 ccm)",
+    value: 6.1,
+  },
+  {
+    name: "Motocykl o pojemności skokowej do 125 ccm",
+    value: 1.2,
+  },
+  {
+    name: "Motocykl o pojemności skokowej powyżej 125 ccm",
+    value: 2.5,
+  },
+  {
+    name: "Samochód ciężarowy o dopuszczalnej masie całkowitej do 3,5 t",
+    value: 0,
+  },
+  {
+    name: "Samochód ciężarowy o dopuszczalnej masie całkowitej powyżej 3,5 t",
+    value: 0,
+  },
+];
+---
+
+<script>
+  function getTaxValue(carValue: number, taxValue: number): string {
+    if (!carValue || !taxValue) {
+      return "0";
+    }
+    const podatekAkcyzy = carValue * (taxValue / 100);
+    return podatekAkcyzy.toFixed(2);
+  }
+
+  const priceInput = document.getElementById("priceInput") as HTMLInputElement;
+  const typeInput = document.getElementById("typeInput") as HTMLInputElement;
+  const response = document.getElementById(
+    "response-paragraph"
+  ) as HTMLInputElement;
+
+  const updateCount = () => {
+    const carValue: number = parseFloat(priceInput.value);
+    const carTaxValue: number = parseFloat(typeInput.value);
+
+    const tax = getTaxValue(carValue, carTaxValue);
+    response.innerHTML = `Podatek akcyzowy wynosi: <b>${tax} PLN</b>`;
+  };
+
+  priceInput?.addEventListener("input", updateCount);
+  typeInput?.addEventListener("change", updateCount);
+</script>
+
+<div class="container mx-auto py-8">
+  <astro-form>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="priceInput"
+        >Wartość Pojazdu (w PLN):</label
+      >
+      <input
+        class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="priceInput"
+        name="priceInput"
+        type="number"
+        required
+      />
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="typeInput"
+        >Rodzaj Pojazdu:</label
+      >
+      <select
+        class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="typeInput"
+        name="typeInput">
+        {
+          options.map((item) => {
+            return <option value={item.value}>{item.name}</option>;
+          })
+        }
+      </select>
+    </div>
+
+    <div class="flex items-center justify-center">
+      <p id="response-paragraph"></p>
+    </div>
+  </astro-form>
+</div>
