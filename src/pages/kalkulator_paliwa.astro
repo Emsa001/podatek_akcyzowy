@@ -1,0 +1,117 @@
+---
+import { Icon } from "astro-icon";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Button from "@components/ui/button.astro";
+---
+
+<script>
+  function calculateTripCost() {
+    const distanceInput = document.getElementById("dystans") as HTMLInputElement;
+    const fuelConsumptionInput = document.getElementById("spalanie") as HTMLInputElement;
+    const fuelPriceInput = document.getElementById("cena-paliwa") as HTMLInputElement;
+    const numPeopleInput = document.getElementById("ilosc-osob") as HTMLInputElement;
+    const avgPersonWeightInput = document.getElementById("waga-osoby") as HTMLInputElement;
+
+    const distance = parseFloat(distanceInput.value) || 0;
+    const fuelConsumption = parseFloat(fuelConsumptionInput.value) || 0;
+    const fuelPrice = parseFloat(fuelPriceInput.value) || 0;
+    const numPeople = parseFloat(numPeopleInput.value) || 0;
+    const avgPersonWeight = parseFloat(avgPersonWeightInput.value) || 0;
+
+    // Calculation without considering people
+    let fuelWithoutPeople = (distance / 100) * fuelConsumption || 0;
+    let costWithoutPeople = fuelWithoutPeople * fuelPrice || 0;
+
+    // Calculation considering people's weight
+    let fuelWithPeople = fuelWithoutPeople + numPeople * (avgPersonWeight / 100) || 0;
+    let costWithPeople = fuelWithPeople * fuelPrice || 0;
+
+    const resultContainer = document.getElementById("result-container") as HTMLInputElement;
+    resultContainer.innerHTML = `
+      <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <h3 class="text-lg font-bold mb-2">Bez ludzi</h3>
+            <p><strong>Zużycie paliwa:</strong> ${fuelWithoutPeople.toFixed(2)} l</p>
+            <p><strong>Koszt podróży:</strong> ${costWithoutPeople.toFixed(2)} zł</p>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold mb-2">Z ludźmi</h3>
+            <p><strong>Zużycie paliwa:</strong> ${fuelWithPeople.toFixed(2)} l</p>
+            <p><strong>Koszt podróży:</strong> ${costWithPeople.toFixed(2)} zł</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  const button = document.getElementById("fuel_count");
+
+  button?.addEventListener("click", calculateTripCost);
+</script>
+
+<Layout title="Kalkulator Paliwa">
+  <Container>
+    <div class="min-h-[calc(100vh-16rem)] w-3/4 mx-auto">
+      <div class="mt-16 text-center">
+        <h1 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">Kalkulator Paliwa</h1>
+        <div class="mx-auto mt-8">
+          <!-- Adjusted max-width for the form -->
+          <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="dystans"> Dystans</label>
+              <div class="relative">
+                <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="dystans" type="text" placeholder="km" />
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="spalanie"> Spalanie (na 100 km)</label>
+              <div class="relative">
+                <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="spalanie" type="text" placeholder="L" />
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="cena-paliwa"> Cena paliwa</label>
+              <div class="relative">
+                <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cena-paliwa" type="text" placeholder="zł" />
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="ilosc-osob"> Ilość osób</label>
+              <div class="relative">
+                <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="ilosc-osob" type="text" />
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="waga-osoby"> Średnia waga osoby</label>
+              <div class="relative">
+                <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="waga-osoby" type="text" placeholder="kg" />
+              </div>
+            </div>
+            <div class="flex items-center justify-end mt-4">
+              <!-- Adjusted margin-top -->
+              <button id="fuel_count" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">Oblicz</button>
+            </div>
+          </form>
+        </div>
+        <div id="result-container" class="w-full mx-auto">
+          <!-- Adjusted max-width for the result container -->
+          <div class="bg-white rounded-lg shadow-lg p-6 mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <!-- Added grid and adjusted grid columns for better separation -->
+            <div>
+              <h3 class="text-lg font-bold mb-2">Bez ludzi</h3>
+              <p><strong>Zużycie paliwa:</strong> <span id="fuel-consumption-without-people"></span></p>
+              <p><strong>Koszt podróży:</strong> <span id="trip-cost-without-people"></span></p>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold mb-2">Z ludźmi</h3>
+              <p><strong>Zużycie paliwa:</strong> <span id="fuel-consumption-with-people"></span></p>
+              <p><strong>Koszt podróży:</strong> <span id="trip-cost-with-people"></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Layout>

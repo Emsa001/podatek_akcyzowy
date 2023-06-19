@@ -1,7 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import { vehicleOptions, currencies, optionalOptions } from "@utils/settings";
 import { getCurrenciesRates } from "@utils/api";
-import EmailForm from "./emailForm";
 
 const defaultCurrency = "PLN";
 
@@ -235,7 +234,6 @@ function Form() {
           </div>
         </div>
       </form>
-      <EmailForm />
     </div>
   );
 }
