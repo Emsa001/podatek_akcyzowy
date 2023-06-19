@@ -57,13 +57,20 @@ export const vehicleOptions = [
 
 export const currencies = ["PLN", "EUR", "GBP", "CHF", "USD"];
 
-export const options = {
-  badaniaTechniczne: 64,
-  badaniaTechniczneKolizja: 94,
-  tlumaczeniaDokumentow: 250,
-  rejestracjaPojazdu: 161.5,
-  tabliceRejestracyjne: 80,
-  dowodRejestracyjny: 54,
-  pozwolenieCzasowe: 26,
-  oplataEwidencyjna: 1.5,
+export const optionalOptions = {
+  badaniaTechniczne: {
+    value: 80,
+    label: "Badania Techniczne",
+  },
+  badaniaTechniczneKolizja: {
+    value: 32,
+    label: "Pojazd Powypadkowy/Kolizyjny",
+  },
+  tabliceRejestracyjne: {
+    value: 122,
+    label: "Indywidualne Tablice Rejestracyjne",
+  },
+  defaultCurrency: "PLN",
 };
+
+export const logoName = `<span class="font-bold text-slate-800">Akcyzowy</span><span class="text-slate-500">.pl</span>`;

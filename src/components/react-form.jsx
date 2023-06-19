@@ -1,23 +1,27 @@
 import { useEffect, useState } from "preact/hooks";
-import { vehicleOptions, currencies, options } from "@utils/tax_data";
+import { vehicleOptions, currencies, optionalOptions } from "@utils/settings";
 import { getCurrenciesRates } from "@utils/api";
+import EmailForm from "./emailForm";
 
-const defaultCurrency = "PLN";
+const defaultCurrency = optionalOptions.defaultCurrency;
+
+function createNewJson(key) {
+  const newJson = {};
+  newJson[key] = optionalOptions[key];
+  return newJson;
+}
 
 function Form() {
-  const [driveType, setDriveType] = useState("");
-
   const [carPrice, setCarPrice] = useState(0);
   const [currencyValue, setCurrencyValue] = useState({ code: "PLN", mid: 1 });
   const [currenciesRates, setCurrenciesRates] = useState([]);
 
   const [totalCost, setTotalCost] = useState(0);
-  const [optionalTax, setOptionalTax] = useState([]);
+  const [optionalTax, setOptionalTax] = useState({});
   const [totalTax, setTotalTax] = useState(0);
   const [excise, setExcise] = useState(0);
   const [excisePercentage, setExcisePercentage] = useState(vehicleOptions[0].value / 100);
 
-  const [engineType, setEngineType] = useState("");
   const [filteredVehicleOptions, setFilteredVehicleOptions] = useState(vehicleOptions);
 
   const getValueOnCurrency = (value) => {
@@ -25,9 +29,6 @@ function Form() {
   };
 
   const handleEngineChange = (selectedEngineType) => {
-    setEngineType(selectedEngineType);
-
-    // Filtruj opcje pojazdów na podstawie wybranego rodzaju napędu
     const filteredOptions = vehicleOptions.filter((option) => {
       return option.fuelType.includes(selectedEngineType);
     });
@@ -37,23 +38,20 @@ function Form() {
   };
 
   const handleCheckboxChange = (tax) => {
-    if (optionalTax.includes(tax)) {
-      // Remove the option if it's already in the array
-      setOptionalTax((prev) => prev.filter((item) => item !== tax));
+    if (optionalTax[tax]) {
+      const { [tax]: removedKey, ...rest } = optionalTax;
+      setOptionalTax(rest);
     } else {
-      // Add the option if it's not in the array
-      setOptionalTax((prev) => [...prev, tax]);
+      const updatedJson = { ...optionalTax, ...createNewJson(tax) };
+      setOptionalTax(updatedJson);
     }
   };
 
   const handleTaxUpdate = () => {
     let excise_temp = parseFloat(excisePercentage * carPrice);
+    const sum = Object.values(optionalTax).reduce((accumulator, value) => accumulator + value.value, 0);
 
-    let totalTax_temp = excise_temp;
-    optionalTax.forEach((item) => {
-      totalTax_temp += item;
-    });
-
+    let totalTax_temp = excise_temp + sum;
     let totalCost_temp = totalTax_temp + parseFloat(carPrice);
 
     setExcise(excise_temp.toFixed(2));
@@ -97,7 +95,7 @@ function Form() {
   }, [carPrice, excisePercentage, optionalTax]);
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 w-9/12">
       <form>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="mb-4">
@@ -144,19 +142,19 @@ function Form() {
           <div className="col-span-2">
             <label className="block text-gray-700 text-sm font-bold mb-2">Dodatkowe Parametry:</label>
             <div className="flex items-center mb-2">
-              <input className="mr-2 leading-tight" type="checkbox" id="lpgCheckbox" name="lpgCheckbox" onChange={() => handleCheckboxChange(options.badaniaTechniczne)} autoComplete="off" />
+              <input className="mr-2 leading-tight" type="checkbox" id="lpgCheckbox" name="lpgCheckbox" onChange={() => handleCheckboxChange("badaniaTechniczne")} autoComplete="off" />
               <label className="text-gray-700 text-sm" htmlFor="lpgCheckbox">
                 Instalacja LPG/CNG
               </label>
             </div>
             <div className="flex items-center mb-2">
-              <input className="mr-2 leading-tight" type="checkbox" id="platesCheckbox" name="platesCheckbox" onChange={() => handleCheckboxChange(options.tabliceRejestracyjne)} autoComplete="off" />
+              <input className="mr-2 leading-tight" type="checkbox" id="platesCheckbox" name="platesCheckbox" onChange={() => handleCheckboxChange("tabliceRejestracyjne")} autoComplete="off" />
               <label className="text-gray-700 text-sm" htmlFor="platesCheckbox">
                 Indywidualne Tablice Rejestracyjne
               </label>
             </div>
             <div className="flex items-center">
-              <input className="mr-2 leading-tight" type="checkbox" id="accidentCheckbox" name="accidentCheckbox" onChange={() => handleCheckboxChange(options.badaniaTechniczneKolizja)} autoComplete="off" />
+              <input className="mr-2 leading-tight" type="checkbox" id="accidentCheckbox" name="accidentCheckbox" onChange={() => handleCheckboxChange("badaniaTechniczneKolizja")} autoComplete="off" />
               <label className="text-gray-700 text-sm" htmlFor="accidentCheckbox">
                 Pojazd Powypadkowy/Kolizyjny
               </label>
@@ -164,7 +162,7 @@ function Form() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center mt-8 w-9/12 mx-auto">
+        <div className="flex items-center justify-center mt-8 mx-auto">
           <div className="relative w-full">
             <div className="my-5 rounded-lg overflow-hidden">
               <div className="flex flex-col w-full bg-blue-200 p-4 text-center text-lg text-primary">
@@ -210,6 +208,17 @@ function Form() {
                   <td className="py-2 px-4">Akcyza</td>
                   <td className="text-right py-2 px-4">{excise}</td>
                 </tr>
+                {Object.entries(optionalTax).map(([key, value]) => {
+                  return (
+                    <tr>
+                      <td className="py-2 px-4">{value.label}</td>
+                      <td className="text-right py-2 px-4">
+                        {getValueOnCurrency(value.value) || 0}
+                        {` ${defaultCurrency}`}
+                      </td>
+                    </tr>
+                  );
+                })}
                 <tr className="bg-blue-50">
                   <td className="py-2 px-4">
                     <strong>Suma</strong>
@@ -226,6 +235,7 @@ function Form() {
           </div>
         </div>
       </form>
+      <EmailForm />
     </div>
   );
 }
