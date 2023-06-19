@@ -70,7 +70,4 @@ export const optionalOptions = {
     value: 122,
     label: "Indywidualne Tablice Rejestracyjne",
   },
-  defaultCurrency: "PLN",
 };
-
-export const logoName = `<span class="font-bold text-slate-800">Akcyzowy</span><span class="text-slate-500">.pl</span>`;

@@ -3,7 +3,7 @@ import { vehicleOptions, currencies, optionalOptions } from "@utils/settings";
 import { getCurrenciesRates } from "@utils/api";
 import EmailForm from "./emailForm";
 
-const defaultCurrency = optionalOptions.defaultCurrency;
+const defaultCurrency = "PLN";
 
 function createNewJson(key) {
   const newJson = {};
