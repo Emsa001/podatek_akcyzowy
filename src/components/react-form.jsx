@@ -8,7 +8,6 @@ function Form() {
   const [driveType, setDriveType] = useState("");
 
   const [carPrice, setCarPrice] = useState(0);
-  const [carPriceConverted, setCarPriceConverted] = useState(0);
   const [currencyValue, setCurrencyValue] = useState({ code: "PLN", mid: 1 });
   const [currenciesRates, setCurrenciesRates] = useState([]);
 
@@ -20,6 +19,10 @@ function Form() {
 
   const [engineType, setEngineType] = useState("");
   const [filteredVehicleOptions, setFilteredVehicleOptions] = useState(vehicleOptions);
+
+  const getValueOnCurrency = (value) => {
+    return parseFloat(value * currencyValue.mid).toFixed(2);
+  };
 
   const handleEngineChange = (selectedEngineType) => {
     setEngineType(selectedEngineType);
@@ -52,6 +55,7 @@ function Form() {
     });
 
     let totalCost_temp = totalTax_temp + parseFloat(carPrice);
+
     setExcise(excise_temp.toFixed(2));
     setTotalCost(parseFloat(totalCost_temp).toFixed(2));
     setTotalTax(parseFloat(totalTax_temp).toFixed(2));
@@ -61,7 +65,6 @@ function Form() {
     const { value } = event.target;
     if (!isNaN(value)) {
       setCarPrice(value);
-      setCarPriceConverted((value * currencyValue.mid).toFixed(2));
     }
   };
 
@@ -75,8 +78,9 @@ function Form() {
       selectedCurrency = currenciesRates.find((item) => item.code === currency);
     }
 
-    setCarPriceConverted((carPrice * selectedCurrency.mid).toFixed(2));
     setCurrencyValue(selectedCurrency);
+
+    handleTaxUpdate();
   };
 
   useEffect(() => {
@@ -166,7 +170,7 @@ function Form() {
               <div className="flex flex-col w-full bg-blue-200 p-4 text-center text-lg text-primary">
                 <h4 className="mb-2">Całkowity koszt</h4>
                 <span id="totalCost" className="font-semibold text-2xl">
-                  {totalCost}
+                  {getValueOnCurrency(totalCost)}
                   {` ${defaultCurrency}`}
                 </span>
               </div>
@@ -174,14 +178,14 @@ function Form() {
                 <div className="p-4">
                   <h4 className="mb-2">Pojazd</h4>
                   <span id="carCost" className="font-semibold">
-                    {carPriceConverted || 0}
+                    {getValueOnCurrency(carPrice) || 0}
                     {` ${defaultCurrency}`}
                   </span>
                 </div>
                 <div className="p-4 bg-gray-200">
                   <h4 className="mb-2">Opłaty</h4>
                   <span id="taxes" className="font-semibold">
-                    {totalTax}
+                    {getValueOnCurrency(totalTax)}
                     {` ${defaultCurrency}`}
                   </span>
                 </div>
@@ -198,7 +202,7 @@ function Form() {
                 <tr className="bg-blue-50">
                   <td className="py-2 px-4">Cena auta</td>
                   <td id="carPrice" className="text-right py-2 px-4">
-                    {carPrice || 0}
+                    {getValueOnCurrency(carPrice) || 0}
                     {` ${defaultCurrency}`}
                   </td>
                 </tr>
@@ -212,7 +216,7 @@ function Form() {
                   </td>
                   <td className="text-right py-2 px-4">
                     <strong>
-                      {totalCost}
+                      {getValueOnCurrency(totalCost)}
                       {` ${defaultCurrency}`}
                     </strong>
                   </td>
