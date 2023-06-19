@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "preact/hooks";
 import { options, currencies } from "@utils/tax_data";
+import { getCurrenciesRates } from "@utils/api";
+
+const defaultCurrency = "PLN";
 
 function Form() {
   const [driveType, setDriveType] = useState("");
@@ -10,6 +13,21 @@ function Form() {
   const [carPrice, setCarPrice] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
   const [totalTax, setTotalTax] = useState(0);
+  const [currencyValue, setCurrencyValue] = useState(1);
+  const [currenciesRates, setCurrenciesRates] = useState([]);
+
+  const handlePriceChange = (event) => {
+    const { value } = event.target;
+    if (!isNaN(value)) {
+      return setCarPrice(value);
+    }
+  };
+
+  const handleCurrencyChange = (event) => {
+    const selectedCurrency = currencies.find((item) => item.code === event.target.value).mid;
+    console.log(selectedCurrency);
+    setCurrencyValue(selectedCurrency);
+  };
 
   return (
     <div className="container mx-auto py-8">
@@ -20,8 +38,8 @@ function Form() {
               Wartość Pojazdu:
             </label>
             <div className="relative">
-              <input className="appearance-none border rounded-l w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="priceInput" type="number" onChange={(value) => console.log(value)} required />
-              <select className="absolute inset-y-0 right-0 border border-l-0 rounded-r bg-white text-gray-700 font-bold py-2 px-3 focus:outline-none cursor-pointer" id="currencyInput" name="currencyInput">
+              <input className="appearance-none border rounded-l w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="priceInput" type="text" value={carPrice} onChange={handlePriceChange} required />
+              <select className="absolute inset-y-0 right-0 border border-l-0 rounded-r bg-white text-gray-700 font-bold py-2 px-3 focus:outline-none cursor-pointer" id="currencyInput" name="currencyInput" value={currencyValue} onChange={handleCurrencyChange}>
                 {currencies.map((item) => (
                   <option key={item} value={item}>
                     {item}
@@ -86,19 +104,22 @@ function Form() {
                 <h4>Całkowity koszt</h4>
                 <span id="totalCost" className="font-semibold text-xl">
                   {totalCost}
+                  {` ${defaultCurrency}`}
                 </span>
               </div>
               <div className="text-center bg-gray-100 w-full grid grid-cols-2 text-lg">
                 <div className="p-4">
                   <h4>Pojazd</h4>
                   <span id="carCost" className="font-semibold">
-                    {carPrice}
+                    {carPrice || 0}
+                    {` ${defaultCurrency}`}
                   </span>
                 </div>
                 <div className="p-4 bg-gray-200">
                   <h4>Opłaty</h4>
                   <span id="taxes" className="font-semibold">
                     {totalTax}
+                    {` ${defaultCurrency}`}
                   </span>
                 </div>
               </div>
@@ -114,7 +135,8 @@ function Form() {
                 <tr className="bg-blue-50" style={{ backgroundColor: "#e9f5f9" }}>
                   <td>Cena auta</td>
                   <td id="carPrice" className="text-right">
-                    0
+                    {carPrice || 0}
+                    {` ${defaultCurrency}`}
                   </td>
                 </tr>
                 <tr>
