@@ -97,17 +97,18 @@ import Button from "@components/ui/button.astro";
         </div>
         <div id="result-container" class="w-full mx-auto">
           <!-- Adjusted max-width for the result container -->
-          <div class="bg-white rounded-lg shadow-lg p-6 mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <!-- Added grid and adjusted grid columns for better separation -->
-            <div>
-              <h3 class="text-lg font-bold mb-2">Bez ludzi</h3>
-              <p><strong>Zużycie paliwa:</strong> <span id="fuel-consumption-without-people"></span></p>
-              <p><strong>Koszt podróży:</strong> <span id="trip-cost-without-people"></span></p>
-            </div>
-            <div>
-              <h3 class="text-lg font-bold mb-2">Z ludźmi</h3>
-              <p><strong>Zużycie paliwa:</strong> <span id="fuel-consumption-with-people"></span></p>
-              <p><strong>Koszt podróży:</strong> <span id="trip-cost-with-people"></span></p>
+          <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <h3 class="text-lg font-bold mb-2">Bez ludzi</h3>
+                <p><strong>Zużycie paliwa:</strong> 0.00 l</p>
+                <p><strong>Koszt podróży:</strong> 0.00 zł</p>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold mb-2">Z ludźmi</h3>
+                <p><strong>Zużycie paliwa:</strong> 0.00 l</p>
+                <p><strong>Koszt podróży:</strong> 0.00 zł</p>
+              </div>
             </div>
           </div>
         </div>

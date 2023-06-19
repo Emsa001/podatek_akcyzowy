@@ -3,29 +3,7 @@ import Container from "@components/container.astro";
 import Link from "@components/ui/link.astro";
 import Dropdown from "./dropdown.astro";
 import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
-
-const menuitems = [
-  {
-    title: "Rejestracja pojazdu i opłata akcyzy",
-    path: "/rejestracja_pojazdu",
-  },
-  {
-    title: "Tłumaczenia przysięgłe",
-    path: "/tlumaczenia_przysiegle",
-  },
-  {
-    title: "Kalkulator paliwa",
-    path: "/kalkulator_paliwa",
-  },
-  {
-    title: "Dokumenty do pobrania",
-    path: "/dokumenty_do_pobrania",
-  },
-  {
-    title: "Ubezpieczenia",
-    path: "/ubezpieczenia",
-  },
-];
+import { menuitems } from "@utils/settings";
 ---
 
 <Container>

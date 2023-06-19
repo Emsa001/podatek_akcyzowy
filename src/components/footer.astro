@@ -1,4 +1,18 @@
-<footer class="my-20">
+---
+import { footerItems } from "@utils/settings";
+---
+
+<footer class="mt-20 mb-5">
+  <nav class="flex justify-center mb-6">
+    {
+      footerItems.map((item, index) => (
+        <a href={item.path} class="text-sm text-slate-500 hover:underline mx-2">
+          {item.title}
+        </a>
+      ))
+    }
+  </nav>
+
   <p class="text-center text-sm text-slate-500">
     Copyright © {new Date().getFullYear()} Astroship. All rights reserved.
   </p>

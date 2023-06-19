@@ -1,0 +1,23 @@
+---
+import { Icon } from "astro-icon";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Button from "@components/ui/button.astro";
+---
+
+<Layout title="Kontakt">
+  <Container>
+    <div class="min-h-[calc(100vh-16rem)] flex justify-center">
+      <div class="mt-16 text-center">
+        <h1 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">Kontakt</h1>
+        <div class="mt-16">
+          <ul class="list-disc list-inside text-gray-700">
+            <li>Email: <a href="mailto:kontakt@przyklad.com" class="text-blue-500">kontakt@przyklad.com</a></li>
+            <li>Telefon: 123-456-789</li>
+            <li>Adres: 123 ulica, Miasto, Kod pocztowy</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Layout>
