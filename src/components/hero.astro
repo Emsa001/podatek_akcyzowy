@@ -1,18 +1,6 @@
----
-import { Picture } from "@astrojs/image/components";
-import heroImage from "assets/hero.png";
-import Link from "@components/ui/link.astro";
-import { Icon } from "astro-icon";
----
-
 <main class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
-  <div class="py-6 md:order-1 hidden md:block">
-    <Picture src={heroImage} alt="Astronaut in the air" widths={[200, 400, 600]} aspectRatio="4:3" sizes="(max-width: 800px) 100vw, 620px" loading="eager" format="png" />
-  </div>
-  <div>
-    <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">Oblicz podatek akcyzowy od samochodu</h1>
-    <p class="text-lg mt-4 text-slate-600 max-w-xl">
-      Podatek akcyzowy to podatek pośredni, który pobierany jest w momencie zakupu lub rejestracji pojazdu.<br /> Jego wysokość zależy od różnych czynników, takich jak rodzaj samochodu, jego pojemność skokowa, rodzaj paliwa czy emisja dwutlenku węgla.
-    </p>
-  </div>
+  <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">Oblicz podatek akcyzowy od samochodu</h1>
+  <p class="text-lg mt-4 text-slate-600 max-w-xl">
+    Podatek akcyzowy to podatek pośredni, który pobierany jest w momencie zakupu lub rejestracji pojazdu.<br /> Jego wysokość zależy od różnych czynników, takich jak rodzaj samochodu, jego pojemność skokowa, rodzaj paliwa czy emisja dwutlenku węgla.
+  </p>
 </main>

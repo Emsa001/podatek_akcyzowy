@@ -30,18 +30,9 @@ import Button from "@components/ui/button.astro";
     const resultContainer = document.getElementById("result-container") as HTMLInputElement;
     resultContainer.innerHTML = `
       <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <h3 class="text-lg font-bold mb-2">Bez ludzi</h3>
-            <p><strong>Zużycie paliwa:</strong> ${fuelWithoutPeople.toFixed(2)} l</p>
-            <p><strong>Koszt podróży:</strong> ${costWithoutPeople.toFixed(2)} zł</p>
-          </div>
-          <div>
-            <h3 class="text-lg font-bold mb-2">Z ludźmi</h3>
-            <p><strong>Zużycie paliwa:</strong> ${fuelWithPeople.toFixed(2)} l</p>
-            <p><strong>Koszt podróży:</strong> ${costWithPeople.toFixed(2)} zł</p>
-          </div>
-        </div>
+          <h3 class="text-lg font-bold mb-2">Bez ludzi</h3>
+          <p><strong>Zużycie paliwa:</strong> ${fuelWithoutPeople.toFixed(2)} l</p>
+          <p><strong>Koszt podróży:</strong> ${costWithoutPeople.toFixed(2)} zł</p>
       </div>
     `;
   }
@@ -98,18 +89,9 @@ import Button from "@components/ui/button.astro";
         <div id="result-container" class="w-full mx-auto">
           <!-- Adjusted max-width for the result container -->
           <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <h3 class="text-lg font-bold mb-2">Bez ludzi</h3>
-                <p><strong>Zużycie paliwa:</strong> 0.00 l</p>
-                <p><strong>Koszt podróży:</strong> 0.00 zł</p>
-              </div>
-              <div>
-                <h3 class="text-lg font-bold mb-2">Z ludźmi</h3>
-                <p><strong>Zużycie paliwa:</strong> 0.00 l</p>
-                <p><strong>Koszt podróży:</strong> 0.00 zł</p>
-              </div>
-            </div>
+            <h3 class="text-lg font-bold mb-2">Bez ludzi</h3>
+            <p><strong>Zużycie paliwa:</strong> 0.00 l</p>
+            <p><strong>Koszt podróży:</strong> 0.00 zł</p>
           </div>
         </div>
       </div>

@@ -24,6 +24,9 @@ function Form() {
   const [filteredVehicleOptions, setFilteredVehicleOptions] = useState(vehicleOptions);
 
   const getValueOnCurrency = (value) => {
+    if (isNaN(value)) {
+      return "0.00";
+    }
     return parseFloat(value * currencyValue.mid).toFixed(2);
   };
 
@@ -65,6 +68,15 @@ function Form() {
     }
   };
 
+  const handleKeyPress = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+    const char = String.fromCharCode(charCode);
+
+    if (!/[\d.]/.test(char)) {
+      event.preventDefault();
+    }
+  };
+
   const handleCurrencyChange = (event) => {
     const currency = event.target.value;
     let selectedCurrency;
@@ -102,7 +114,15 @@ function Form() {
               Wartość Pojazdu:
             </label>
             <div className="relative flex items-center">
-              <input className="appearance-none border rounded-l w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="priceInput" type="text" value={carPrice} onChange={handlePriceChange} required />
+              <input
+                className="appearance-none border rounded-l w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                name="priceInput"
+                type="text"
+                value={carPrice}
+                onChange={handlePriceChange}
+                onKeyPress={handleKeyPress} // Added onKeyPress event handler
+                required
+              />
               <select className="absolute inset-y-0 right-0 border border-l-0 rounded-r bg-white text-gray-700 font-bold py-2 px-3 focus:outline-none cursor-pointer" id="currencyInput" name="currencyInput" value={currencyValue.code} onChange={handleCurrencyChange}>
                 {currencies.map((item, index) => (
                   <option key={index} value={item} selected={index === 0}>
@@ -167,7 +187,7 @@ function Form() {
               <div className="flex flex-col w-full bg-blue-200 p-4 text-center text-lg text-primary">
                 <h4 className="mb-2">Całkowity koszt</h4>
                 <span id="totalCost" className="font-semibold text-2xl">
-                  {getValueOnCurrency(totalCost)}
+                  {getValueOnCurrency(totalCost) || 0}
                   {` ${defaultCurrency}`}
                 </span>
               </div>
@@ -182,7 +202,7 @@ function Form() {
                 <div className="p-4 bg-gray-200">
                   <h4 className="mb-2">Opłaty</h4>
                   <span id="taxes" className="font-semibold">
-                    {getValueOnCurrency(totalTax)}
+                    {getValueOnCurrency(totalTax) || 0}
                     {` ${defaultCurrency}`}
                   </span>
                 </div>
@@ -224,7 +244,7 @@ function Form() {
                   </td>
                   <td className="text-right py-2 px-4">
                     <strong>
-                      {getValueOnCurrency(totalCost)}
+                      {getValueOnCurrency(totalCost) || 0}
                       {` ${defaultCurrency}`}
                     </strong>
                   </td>

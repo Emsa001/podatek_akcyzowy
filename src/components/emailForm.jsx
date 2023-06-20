@@ -1,10 +1,11 @@
-import React, { useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 
 const EmailForm = () => {
   const [email, setEmail] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
 
   const handleEmailChange = (e) => {
+    console.log("asd");
     setEmail(e.target.value);
   };
 
@@ -12,14 +13,32 @@ const EmailForm = () => {
     setTermsAccepted(!termsAccepted);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Here you can perform the logic to send the email
+    // Send email using server-side implementation
+    try {
+      const response = await fetch("/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
 
-    // Reset the form
-    setEmail("");
-    setTermsAccepted(false);
+      if (response.ok) {
+        // Email sent successfully
+        alert("Email sent!");
+        setEmail("");
+        setTermsAccepted(false);
+      } else {
+        // Handle error if email sending fails
+        alert("Failed to send email. Please try again later.");
+      }
+    } catch (error) {
+      // Handle network or other errors
+      alert("An error occurred. Please try again later.");
+    }
   };
 
   return (
