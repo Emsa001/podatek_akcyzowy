@@ -3,7 +3,6 @@ import Container from "@components/container.astro";
 import Hero from "@components/hero.astro";
 import ReactForm from "@components/exciseCalculator.jsx";
 import Layout from "@layouts/Layout.astro";
-import EmailForm from "@components/emailForm.jsx";
 ---
 
 <Layout title="">
@@ -11,6 +10,5 @@ import EmailForm from "@components/emailForm.jsx";
     <Hero />
     <hr />
     <ReactForm client:idle />
-    <EmailForm client:idle />
   </Container>
 </Layout>
